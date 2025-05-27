@@ -63,5 +63,54 @@ class ScannerTest {
         Scanner scanner = new Scanner("$");
         assertDoesNotThrow(scanner::scanTokens);
     }
+
+   @Test
+       void unterminatedStringReportsError() {
+           Scanner scanner = new Scanner("\"This is an unterminated string");
+           List<Token> tokens = scanner.scanTokens();
+           assertEquals(1, tokens.size()); // Only EOF token should be present
+           assertEquals(EOF, tokens.get(0).type);
+       }
+
+       @Test
+       void validStringLiteralCreatesToken() {
+           Scanner scanner = new Scanner("\"This is a string\"");
+           List<Token> tokens = scanner.scanTokens();
+           assertEquals(2, tokens.size()); // STRING token + EOF
+           assertEquals(STRING, tokens.get(0).type);
+           assertEquals("This is a string", tokens.get(0).literal);
+       }
+
+       @Test
+       void emptySourceProducesOnlyEOFToken() {
+           Scanner scanner = new Scanner("");
+           List<Token> tokens = scanner.scanTokens();
+           assertEquals(1, tokens.size()); // Only EOF token
+           assertEquals(EOF, tokens.get(0).type);
+       }
+
+       @Test
+       void handlesMultipleLinesCorrectly() {
+           Scanner scanner = new Scanner("(\n)\n{\n}");
+           List<Token> tokens = scanner.scanTokens();
+           assertEquals(5, tokens.size()); // 4 tokens + EOF
+           assertEquals(LEFT_PAREN, tokens.get(0).type);
+           assertEquals(RIGHT_PAREN, tokens.get(1).type);
+           assertEquals(LEFT_BRACE, tokens.get(2).type);
+           assertEquals(RIGHT_BRACE, tokens.get(3).type);
+           assertEquals(EOF, tokens.get(4).type);
+       }
+
+       @Test
+       void ignoresWhitespaceBetweenTokens() {
+           Scanner scanner = new Scanner("  (   ) {   } ");
+           List<Token> tokens = scanner.scanTokens();
+           assertEquals(5, tokens.size()); // 4 tokens + EOF
+           assertEquals(LEFT_PAREN, tokens.get(0).type);
+           assertEquals(RIGHT_PAREN, tokens.get(1).type);
+           assertEquals(LEFT_BRACE, tokens.get(2).type);
+           assertEquals(RIGHT_BRACE, tokens.get(3).type);
+           assertEquals(EOF, tokens.get(4).type);
+       }
 }
 
