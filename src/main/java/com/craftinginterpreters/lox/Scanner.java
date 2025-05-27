@@ -206,5 +206,7 @@ class Scanner {
             Lox.error(line, "Unterminated string.");
             return;
         }
+
+        advance();
     }
 }
