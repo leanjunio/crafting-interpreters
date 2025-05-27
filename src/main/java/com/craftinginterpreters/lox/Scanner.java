@@ -201,5 +201,10 @@ class Scanner {
             if (peek() == '\n') line++;
             advance();
         }
+
+        if (isAtEnd()) {
+            Lox.error(line, "Unterminated string.");
+            return;
+        }
     }
 }
