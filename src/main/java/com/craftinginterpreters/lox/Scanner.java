@@ -125,7 +125,6 @@ class Scanner {
         }
     }
 
-
     /**
      * Checks if the given character is an alphabetic character (a-z, A-Z) or an underscore ('_').
      *
@@ -134,6 +133,16 @@ class Scanner {
      */
     private boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    /**
+     * Checks if the given character is alphanumeric (a-z, A-Z, 0-9) or an underscore ('_').
+     *
+     * @param c the character to check
+     * @return true if the character is alphanumeric or an underscore, false otherwise
+     */
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
     }
 
     /**
