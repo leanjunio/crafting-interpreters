@@ -125,6 +125,17 @@ class Scanner {
         }
     }
 
+
+    /**
+     * Checks if the given character is an alphabetic character (a-z, A-Z) or an underscore ('_').
+     *
+     * @param c the character to check
+     * @return true if the character is alphabetic or an underscore, false otherwise
+     */
+    private boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
     /**
      * Scans a sequence of digits in the source code and creates a NUMBER token.
      * It continues to advance the current position as long as the next character is a digit.
