@@ -118,10 +118,24 @@ class Scanner {
             }
 
             default:
+                if (isDigit(c)) {
+                    number();
+                }
                 Lox.error(line, "Unexpected character.");
         }
     }
 
+    /**
+         * Scans a numeric literal from the source code.
+         * Continues advancing through the characters as long as they are digits (0-9).
+         *
+         * Example:
+         *   // Suppose source = "123abc", current = 0
+         *   number(); // advances current to 3, recognizing "123" as a number
+         */
+        private void number() {
+            while (isDigit(peek())) advance();
+        }
 
     /**
      * Checks if the next character in the source matches the expected character.
@@ -161,6 +175,16 @@ class Scanner {
     private char peek() {
         if (isAtEnd()) return '\0';
         return source.charAt(current);
+    }
+
+    /**
+     * Checks if the given character is a digit (0-9).
+     *
+     * @param c the character to check
+     * @return true if the character is a digit, false otherwise
+     */
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 
     /**
