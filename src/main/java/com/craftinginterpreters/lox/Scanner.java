@@ -120,11 +120,22 @@ class Scanner {
             default:
                 if (isDigit(c)) {
                     number();
+                } else if (isAlpha(c)) {
+                    identifier();
                 }
                 Lox.error(line, "Unexpected character.");
         }
     }
 
+    /**
+     * Scans the next character in the source code that follows the criteria for an identifier.
+     * An identifier starts with an alphabetic character (a-z, A-Z) or an underscore ('_'),
+     */
+    private void identifier() {
+        while (isAlphaNumeric(peek())) advance();
+
+        addToken(IDENTIFIER);
+    }
     /**
      * Checks if the given character is an alphabetic character (a-z, A-Z) or an underscore ('_').
      *
