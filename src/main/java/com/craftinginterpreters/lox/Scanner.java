@@ -126,6 +126,7 @@ class Scanner {
                     // If we reach here, it means we encountered an unexpected character.
                     // We report an error and continue scanning.
                     Lox.error(line, "Unexpected character: '" + c + "'.");
+                }
         }
     }
 
