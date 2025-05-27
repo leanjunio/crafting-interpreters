@@ -126,16 +126,29 @@ class Scanner {
     }
 
     /**
-         * Scans a numeric literal from the source code.
-         * Continues advancing through the characters as long as they are digits (0-9).
-         *
-         * Example:
-         *   // Suppose source = "123abc", current = 0
-         *   number(); // advances current to 3, recognizing "123" as a number
-         */
-        private void number() {
+     * Scans a sequence of digits in the source code and creates a NUMBER token.
+     * It continues to advance the current position as long as the next character is a digit.
+     *
+     * If a decimal point is encountered, it checks if the next character is also a digit to handle floating-point numbers.
+     *
+     * Example:
+     *   // Suppose source = "123abc", current = 0
+     *   number(); // current becomes 3, token created for "123"
+     *
+     * @throws Lox.error if the scanned number is malformed (e.g., contains non-digit characters)
+     */
+    private void number() {
+        while (isDigit(peek())) advance();
+
+        // Look for a fractional part.
+        if (peek() == '.' && isDigit(peekNext())) {
+            // Consume the '.'
+            advance();
             while (isDigit(peek())) advance();
         }
+
+        addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
+    }
 
     /**
      * Checks if the next character in the source matches the expected character.
@@ -175,6 +188,23 @@ class Scanner {
     private char peek() {
         if (isAtEnd()) return '\0';
         return source.charAt(current);
+    }
+
+    /**
+     * Returns the character at the next position without advancing the current position.
+     * If the next position is at the end of the source, it returns a null character ('\0').
+     *
+     * Example:
+     *   // Suppose source = "hello", current = 0
+     *   peekNext(); // returns 'e', current remains at 0
+     *   advance();  // returns 'h', current becomes 1
+     *   peekNext(); // returns 'l', current still at 1
+     *
+     * @return the character at the next position, or '\0' if at the end of the source
+     */
+    private char peekNext() {
+        if (current + 1 >= source.length()) return '\0';
+        return source.charAt(current + 1);
     }
 
     /**
