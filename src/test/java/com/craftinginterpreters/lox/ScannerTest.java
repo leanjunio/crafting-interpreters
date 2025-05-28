@@ -158,5 +158,41 @@ class ScannerTest {
         Scanner scanner = new Scanner("\"Unterminated string");
         assertDoesNotThrow(scanner::scanTokens);
     }
+
+    @Test
+    void keywordsAreRecognizedCorrectly() {
+        Scanner scanner = new Scanner("and class else false for fun if nil or print return super this true var while");
+        List<Token> tokens = scanner.scanTokens();
+        assertEquals(17, tokens.size()); // 16 keywords + EOF
+        assertEquals(AND, tokens.get(0).type);
+        assertEquals(CLASS, tokens.get(1).type);
+        assertEquals(ELSE, tokens.get(2).type);
+        assertEquals(FALSE, tokens.get(3).type);
+        assertEquals(FOR, tokens.get(4).type);
+        assertEquals(FUN, tokens.get(5).type);
+        assertEquals(IF, tokens.get(6).type);
+        assertEquals(NIL, tokens.get(7).type);
+        assertEquals(OR, tokens.get(8).type);
+        assertEquals(PRINT, tokens.get(9).type);
+        assertEquals(RETURN, tokens.get(10).type);
+        assertEquals(SUPER, tokens.get(11).type);
+        assertEquals(THIS, tokens.get(12).type);
+        assertEquals(TRUE, tokens.get(13).type);
+        assertEquals(VAR, tokens.get(14).type);
+        assertEquals(WHILE, tokens.get(15).type);
+    }
+
+    @Test
+    void keywordsAndIdentifiersAreDifferentiated() {
+        Scanner scanner = new Scanner("var variable if ifstatement class classname");
+        List<Token> tokens = scanner.scanTokens();
+        assertEquals(7, tokens.size()); // 6 tokens + EOF
+        assertEquals(VAR, tokens.get(0).type);
+        assertEquals(IDENTIFIER, tokens.get(1).type);
+        assertEquals(IF, tokens.get(2).type);
+        assertEquals(IDENTIFIER, tokens.get(3).type);
+        assertEquals(CLASS, tokens.get(4).type);
+        assertEquals(IDENTIFIER, tokens.get(5).type);
+    }
 }
 
