@@ -39,6 +39,19 @@ Or to start an interactive prompt:
 ```sh
 mvn compile
 java -cp target/classes com.craftinginterpreters.lox.Lox
+> 2 + 2
+NUMBER 2 2.0
+PLUS + null
+NUMBER 2 2.0
+EOF  null
+> if i == x
+IF if null
+IDENTIFIER i null
+EQUAL_EQUAL == null
+IDENTIFIER x null
+EOF  null
+> 
+
 ```
 
 ## Testing
